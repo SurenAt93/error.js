@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script type="text/javascript">
+
+    </script>
+    <script type="text/javascript">
+      var errorLine;
+      window.onerror = function(errorMsg, url, lineNumber) {
+        if (errorLine != lineNumber) {
+          errorLine = lineNumber;
+          errorDetail = {
+            errorMsg: errorMsg,
+            url: url,
+            lineNumber: lineNumber
+          }
+          var xhr = new XMLHttpRequest();
+
+          xhr.open(
+            'POST', '/test', true
+            );
+
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(errorDetail));
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState != 4) return;
+            if (xhr.status == 200) {
+              console.log(xhr.responseText);
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function testToError() {
+        error();
+      }
+      function testToError2() {
+        error2();
+      }
+    </script>
+    Test for my js error handler
+    <button onclick="testToError()" id="test">Test to error</button>
+    <button onclick="testToError2()">Test to error2</button>
+  </body>
+</html>
